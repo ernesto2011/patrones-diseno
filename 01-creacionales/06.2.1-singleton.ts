@@ -1,3 +1,5 @@
+import { configManager } from "./singleton/config-manager.ts";
+
 /**
  * ! Singleton:
  * Es un patrón de diseño creacional que garantiza que una clase
@@ -9,3 +11,12 @@
  *
  * https://refactoring.guru/es/design-patterns/singleton
  */
+configManager.setConfig("apiURL",'http://localhost:3000/api');
+configManager.setConfig('timeout','5000')
+configManager.setConfig('apikey','adee4r34rfec$23@##')
+
+console.log(configManager.getConfig('apiURL'));
+console.log(configManager.getConfig('timeout'));
+console.log(configManager.getConfig('apikey'));
+
+

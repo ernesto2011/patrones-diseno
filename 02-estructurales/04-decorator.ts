@@ -1,3 +1,5 @@
+import { COLORS } from "../helpers/colors.ts";
+
 /**
  * ! Patrón decorador
  * Es un patrón de diseño estructural que permite añadir
@@ -11,3 +13,50 @@
  *
  * https://refactoring.guru/es/design-patterns/decorator
  */
+interface Notification {
+    send(message: string): void;
+}
+class BasicNotification implements Notification {
+    send(message: string): void {
+      console.log(`%cEnviando notificación basica: %c${message}`, COLORS.blue, COLORS.white);
+    }
+}
+
+abstract class NotificationDecorator implements Notification{
+    protected notification: Notification;
+    constructor(notification: Notification){
+        this.notification = notification
+    }
+    send(message: string): void {
+      this.notification.send(message)
+    }
+}
+
+class EmailDecorator extends NotificationDecorator{
+    private sendEmail(messge: string){
+        console.log(`%cEnviando notificación por correo electrónico: %c${messge}`, COLORS.green, COLORS.white);
+    }
+    override send(message: string): void {
+      super.send(message)
+      this.sendEmail(message)
+    }
+}
+class SMSDecorator extends NotificationDecorator{
+    private sendSMS(messge: string){
+        console.log(`%cEnviando notificación por SMS: %c${messge}`,COLORS.cyan, COLORS.white);
+    }
+    override send(message: string): void {
+      super.send(message)
+      this.sendSMS(message)
+    }
+}
+
+function main(){
+    let notification: Notification = new BasicNotification();
+
+    notification = new EmailDecorator(notification)
+    notification = new SMSDecorator(notification)
+    notification.send('Alerta de sistema')
+}
+
+main()
